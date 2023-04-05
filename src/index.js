@@ -21,7 +21,7 @@ function handleSearch(e) {
     };
     API.fetchCountries(textInput)
         .then(renderMarkup)
-        .catch(handleFetchError)
+        .catch(handleError)
 };
 
 function renderMarkup(countries) { 
@@ -31,19 +31,15 @@ function renderMarkup(countries) {
 
     } else if (countries.length <= 10 && countries.length >= 2) {
 
-        const createdElements = countries.map(e => {
-            const createdElement = `
-            <li class="country-list__item">
+        const markup = countries.map(el =>
+            `<li class="country-list__item">
                 <div class="country-list__container">
-                    <img class="country-list__img" src="${e.flags.svg}" alt="${e.flags.alt}">
-                    <p class="country-list__text"><b>${e.name.official}</b></p>
+                    <img class="country-list__img" src="${el.flags.svg}" alt="${el.flags.alt}">
+                    <p class="country-list__text"><b>${el.name.official}</b></p>
                 </div>
-            </li>
-            `;
-            return createdElement;
-        }).join('')
+            </li>`).join('')
         
-        refs.countryList.innerHTML = createdElements;
+        refs.countryList.innerHTML = markup;
 
     } else if (countries.length === 1) {
         refs.countryInfo.innerHTML = `
@@ -60,7 +56,7 @@ function renderMarkup(countries) {
     }
 };
 
-function handleFetchError() { 
+function handleError() { 
     Notiflix.Notify.failure('Oops, there is no country with that name');
 };
 
